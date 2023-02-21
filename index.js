@@ -29,7 +29,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(express.static('public'));
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '20mb' }));
+app.use((req, res, next) => {
+	res.locals.obiApi = this.obiApi;
+	next();
+});
 app.use(cors({ origin: '*' }));
 
 const storage = multer.diskStorage({
