@@ -1,9 +1,11 @@
-const express = require('express');
-const app = express();
-const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
-const cors = require('cors');
+import * as dotenv from 'dotenv';
+import express from 'express';
+import path, { dirname } from 'path';
+import multer from 'multer';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
+
+dotenv.config();
 const now = new Date();
 // Format the date as "yyyy-mm-dd"
 const year = now.getFullYear();
@@ -19,6 +21,10 @@ const time = `${hours}${minutes}${seconds}`;
 const dateTime = `${date}_${time}`;
 var baseUrl;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const app = express();
 app.use(cors({ origin: '*' }));
 
 const storage = multer.diskStorage({
@@ -53,7 +59,7 @@ app.post('/upload/csv', function (req, res) {
 			});
 		}
 		// baseUrl = getBaseUrl(req);
-		baseUrl = 'http://localhost:3000';
+		baseUrl = process.env.BASE_URL;
 		console.log(baseUrl);
 		const fileUrl = `${baseUrl}/uploads/${file.filename}`;
 		console.log(fileUrl);
