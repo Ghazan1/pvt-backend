@@ -25,6 +25,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use(express.static('public'));
+
 app.use(cors({ origin: '*' }));
 
 const storage = multer.diskStorage({
@@ -45,7 +50,7 @@ function getBaseUrl(req) {
 }
 
 app.post('/upload/csv', function (req, res) {
-	console.log('checking API Request :::');
+	console.log('checking API Request :::', __dirname);
 	upload(req, res, function (err) {
 		let file = req.file;
 		if (err instanceof multer.MulterError) {
