@@ -5,6 +5,7 @@ import multer from "multer";
 import cors from "cors";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import serveIndex from "serve-index";
 
 dotenv.config();
 const now = new Date();
@@ -26,6 +27,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+app.use(
+  "/files",
+  express.static("public"),
+  serveIndex("public", { icon: true })
+);
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
