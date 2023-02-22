@@ -67,7 +67,7 @@ app.post("/upload/csv", function (req, res) {
     }
     // baseUrl = getBaseUrl(req);
     baseUrl = process.env.BASE_URL;
-    const fileUrl = `${baseUrl}/uploads/${file.filename}`;
+    const fileUrl = `https://pvt-1.onrender.com"/uploads/${file.filename}`;
     return res.status(200).json({
       success: true,
       message: "File uploaded successfully",
