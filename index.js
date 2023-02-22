@@ -43,11 +43,20 @@ app.use(cors({ origin: "*" }));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname + "/public/uploads/"));
+    cb(null, "public/uploads"); // specify the destination folder where the file will be saved
   },
   filename: function (req, file, cb) {
-    // const uniqueSuffix = `${dateTime}`;
-    cb(null, dateTime + path.extname(file.originalname));
+    const date = new Date();
+    const timestamp = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}_${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}-${date.getMinutes().toString().padStart(2, "0")}-${date
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}`;
+    cb(null, timestamp); // concatenate the timestamp and the original file name
   },
 });
 
@@ -74,7 +83,8 @@ app.post("/upload/csv", function (req, res) {
     }
     // baseUrl = getBaseUrl(req);
     baseUrl = process.env.BASE_URL;
-    const fileUrl = `https://pvt-1.onrender.com/download/${file.filename}`;
+    const fileUrl = `https://pvt-1.onrender.com/download/${req.file.filename}`;
+    console.log(file);
     return res.status(200).json({
       success: true,
       message: "File uploaded successfully",
