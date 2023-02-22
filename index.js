@@ -4,6 +4,7 @@ import path, { dirname } from "path";
 import multer from "multer";
 import cors from "cors";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 dotenv.config();
 const now = new Date();
@@ -77,10 +78,7 @@ app.post("/upload/csv", function (req, res) {
 });
 
 app.get("/download/:csv", (req, res) => {
-  const filePath = path.join(
-    __dirname,
-    `/Users/mac/Desktop/pvt-backend/public/uploads/${req.params.csv}`
-  );
+  const filePath = path.join(__dirname, `public/uploads/${req.params.csv}`);
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -88,8 +86,6 @@ app.get("/download/:csv", (req, res) => {
       res.status(500).send("Server Error");
       return;
     }
-
-    res.setHeader("Content-Disposition", "attachment; filename=file.csv");
     res.setHeader("Content-Type", "text/csv");
     res.send(data);
   });
