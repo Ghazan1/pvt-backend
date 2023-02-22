@@ -68,9 +68,8 @@ function getBaseUrl(req) {
 }
 
 app.post("/upload/csv", function (req, res) {
-  console.log("checking API Request :::", __dirname);
   upload(req, res, function (err) {
-    let file = req.file;
+    const file = req.file;
     if (err instanceof multer.MulterError) {
       return res.status(500).json({ success: false, message: err.message });
     } else if (err) {
@@ -83,8 +82,7 @@ app.post("/upload/csv", function (req, res) {
     }
     // baseUrl = getBaseUrl(req);
     baseUrl = process.env.BASE_URL;
-    const fileUrl = `https://pvt-1.onrender.com/download/${req.file.filename}`;
-    console.log(file);
+    const fileUrl = `https://pvt-1.onrender.com/download/${file.filename}`;
     return res.status(200).json({
       success: true,
       message: "File uploaded successfully",
