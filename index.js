@@ -67,12 +67,31 @@ app.post("/upload/csv", function (req, res) {
     }
     // baseUrl = getBaseUrl(req);
     baseUrl = process.env.BASE_URL;
-    const fileUrl = `https://pvt-1.onrender.com/uploads/${file.filename}`;
+    const fileUrl = `https://pvt-1.onrender.com/download/${file.filename}`;
     return res.status(200).json({
       success: true,
       message: "File uploaded successfully",
       url: fileUrl,
     });
+  });
+});
+
+app.get("/download/:csv", (req, res) => {
+  const filePath = path.join(
+    __dirname,
+    `/Users/mac/Desktop/pvt-backend/public/uploads/${req.params.csv}`
+  );
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Server Error");
+      return;
+    }
+
+    res.setHeader("Content-Disposition", "attachment; filename=file.csv");
+    res.setHeader("Content-Type", "text/csv");
+    res.send(data);
   });
 });
 
